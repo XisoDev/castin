@@ -1,0 +1,41 @@
+<div id="loginWrap" class="move">
+  <button id="backbutton" class="button-small button button-royal wow fadeInDown" ng-click="goState('login')">
+    <i class="xi-angle-left"></i>
+    뒤로
+  </button>
+  <div id="login" class="agreement">
+    <h1 class="softgearSmall wow fadeInDown">
+      <small>soft</small>
+      <b>GEAR</b>
+    </h1>
+
+    <div class="wow fadeInDown" data-wow-delay="1s">
+      <h2 class="blackBGTitle">서비스 이용약관</h2>
+
+      <div class="blackBox" ng-include="'service_agreement'">
+      </div>
+      <ion-checkbox ng-model="agreement.service">동의합니다.</ion-checkbox>
+
+      <h2 class="blackBGTitle">개인정보 보호 및 취급방침</h2>
+
+      <div class="blackBox" ng-include="'service_privacy'">
+      </div>
+      <ion-checkbox ng-model="agreement.privacy">동의합니다.</ion-checkbox>
+
+      <button ng-class="{'button-assertive' : agreement.privacy && agreement.service}" class="button button-block" ng-click="agree()">
+        <i class="xi-check"></i>
+        방송 시청을 시작합니다.
+      </button>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="service_agreement">
+  <b>서비스 이용약관</b>
+  <p>{{agrees.agreement}}</p>
+</script>
+
+<script type="text/ng-template" id="service_privacy">
+  <b>개인정보 보호 및 취급방침</b>
+  <p>{{agrees.privacy}}</p>
+</script>

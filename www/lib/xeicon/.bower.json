@@ -1,0 +1,40 @@
+{
+  "name": "xeicon",
+  "description": "Beautiful transformable iconic font made for the web.",
+  "version": "2.2.0",
+  "authors": "NAVER Corp",
+  "keywords": [
+    "xe",
+    "xeicon",
+    "xe-icon",
+    "icon",
+    "font"
+  ],
+  "homepage": "http://xpressengine.github.io/XEIcon/",
+  "dependencies": {},
+  "devDependencies": {},
+  "license": [
+    "OFL-1.1",
+    "MIT",
+    "CC-BY-4.0"
+  ],
+  "main": [
+    "./xeicon.css",
+    "./xeicon.min.css",
+    "./fonts/*"
+  ],
+  "ignore": [
+    "*.json",
+    "*.md"
+  ],
+  "_release": "2.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.2.0",
+    "commit": "3a0bda007e926c3ae15bc51eb49b043d90449dcb"
+  },
+  "_source": "https://github.com/xpressengine/XEIcon.git",
+  "_target": "^2.2.0",
+  "_originalSource": "xeicon",
+  "_direct": true
+}

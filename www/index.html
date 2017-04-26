@@ -18,6 +18,8 @@
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="wowjs/animate.css" rel="stylesheet">
+    <link href="lib/xeicon/xeicon.min.css" rel="stylesheet">
     <link href="css/bpHS.css" rel="stylesheet">
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -38,6 +40,7 @@
     <script src="js/service.js"></script>
     <script src="js/controller.js"></script>
     <script src="js/jquery.11.1.min.js"></script>
+    <script src="wowjs/wow.min.js"></script>
 
     <!--터치 스와이프가 가능하게 해줌.-->
     <!--<script src="js/jquery.touchSwipe.min.js"></script>-->
@@ -47,5 +50,17 @@
   </head>
   <body ng-app="didplayer">
   <ion-nav-view></ion-nav-view>
+  <script type="text/javascript">
+    wow = new WOW(
+      {
+        animateClass: 'animated',
+        offset:       100,
+        callback:     function(box) {
+          console.log("WOW: animating <" + box.tagName.toLowerCase() + ">")
+        }
+      }
+    );
+    wow.init();
+  </script>
   </body>
 </html>

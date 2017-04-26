@@ -3912,7 +3912,7 @@ var BaseSettings = (function () {
 })();
 
 var temp = new BaseSettings().factory('$ionicCoreSettings', function () {
-  "IONIC_SETTINGS_STRING_START";var settings = {"app_id":"df7f7987","api_key":"6d90910853b00abcb12857f88fdfa21ba747c85ad7f0eb93","dev_push":false,"gcm_key":"AIzaSyDdHSzObh2v58Z8okOVmSlTrO_y0dBXtJ8"}; return { get: function(setting) { if (settings[setting]) {return settings[setting]; } return null; } };"IONIC_SETTINGS_STRING_END";
+  "IONIC_SETTINGS_STRING_START";var settings = {"app_id":"df7f7987","api_key":"6d90910853b00abcb12857f88fdfa21ba747c85ad7f0eb93","dev_push":false,"gcm_key":"AIzaSyCizLNmNQXQfEHsoLbiayTNdEzKHpz1SU4"}; return { get: function(setting) { if (settings[setting]) {return settings[setting]; } return null; } };"IONIC_SETTINGS_STRING_END";
 }).finish();
 
 var Settings = (function () {

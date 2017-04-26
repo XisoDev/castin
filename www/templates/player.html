@@ -1,18 +1,13 @@
-<ion-view view-title="DID PLAYER" name="playerView" ng-attr-style="{{player.background ? 'background-image:url(' + player.background + ');' : undefined}}">
+<ion-view view-title="DID PLAYER" name="playerView">
   <ion-content overflow-scroll="false">
-    <div style="position:fixed; top:0; left:0; width:100%; background: url('./img/splash.png');height:100%;">
+    <div style="position:fixed; background-size:cover; background-position:center; top:0; left:0; width:100%; z-index:-1; background-image: url('./img/splash.png');height:100%;">
     </div>
-    <!--채널이없는 DID모드이면 가입하기 버튼이 안보이므로,-->
-    <div class="signedChannel" ng-if="!player.ch_srl && player.didmode">
-      미등록 단말기입니다.
-      <span class="authNum">{{auth_no}}</span>
-      홈방 앱을 실행 후 인증번호를 입력하세요.
-    </div>
+
     <div class="progress" ng-if="is_downloading">
         <p class="percent">{{progress}}%</p>
         <p class="total">downloading.. ({{down_cur+1}}/{{down_total}})</p>
     </div>
       <div ng-show="player.clock != 'N'" class="clock" ng-class="{'clock_top': player.clock == 'T', 'clock_mid': player.clock == 'M', 'clock_bot': player.clock == 'B'}">{{clock}}</div>
-    <div id="player_area" class="fullheight" ng-include="'./templates/tpls/' + template_mode + '.html'"></div>
+      <div id="player_area" class="fullheight" ng-include="'./templates/tpls/' + template_mode + '.html'" ng-attr-style="{{player.background ? 'background-image:url(' + player.background + ');' : undefined}}"></div>
   </ion-content>
 </ion-view>

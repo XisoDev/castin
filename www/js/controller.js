@@ -1,17 +1,124 @@
 // 레이아웃
-app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordovaFileTransfer, $timeout, FileObj, Server, Auth, Tpl, DownloadedContent, Content, Channel, Viewcount){
+app.controller('agreeCtrl', function($scope, $state, Agreement, Toast){
+
+  $scope.agreement = {};
+  $scope.agrees = {};
+  Agreement.getAgreement().then(function(res){
+    // console.log(res);
+    $scope.agrees.agreement = res.config;
+  });
+  Agreement.getPrivacy().then(function(res){
+    // console.log(res);
+    $scope.agrees.privacy = res.config;
+  });
+
+  console.log($scope.agrees);
+
+  $scope.agree = function(){
+    if(!$scope.agreement.service) return Toast('서비스 이용약관에 동의해주세요.');
+    if(!$scope.agreement.privacy) return Toast('개인정보 보호 및 취급방침에 동의해주세요.');
+    window.localStorage['agreement'] = "Y";
+
+    $state.go('player');
+  };
+
+  $scope.goState = function(state_name){
+    $state.go(state_name);
+  };
+
+});
+
+app.controller('loginCtrl', function($scope, $state, Toast){
+
+  $scope.nick_name = "";
+  $scope.login = function(){
+    if(!$scope.nick_name) return Toast('방송 참여시 사용할 닉네임을 지정해야합니다.');
+
+    //중복체크해주세요 ㅎㅎㅎ
+
+
+    //글자수
+    var strValue = $scope.nick_name;
+    var strLen = strValue.length;
+    var totalByte = 0;
+    var minByte = 2;
+    var maxByte = 10;
+    var len = 0;
+    var oneChar = "";
+    var str2 = "";
+
+    for (var i = 0; i < strLen; i++) {
+      // oneChar = strValue.charAt(i);
+      // if (escape(oneChar).length > 4) {
+      //   totalByte += 2;
+      // } else {
+        totalByte++;
+      // }
+
+      // 입력한 문자 길이보다 넘치면 잘라내기 위해 저장
+      if (totalByte <= maxByte) {
+        len = i + 1;
+      }
+    }
+
+    // 넘어가는 글자는 자른다.
+    if (totalByte > maxByte) {
+      return Toast(maxByte + "자를 초과 입력 할 수 없습니다.");
+    }else if(totalByte < minByte){
+      return Toast(minByte + "자 이상 입력 해야합니다.");
+    }
+
+    window.localStorage['nick_name'] = $scope.nick_name;
+
+    $state.go('player');
+  }
+
+});
+
+//다른채널 보기
+app.controller('channelCtrl', function($scope, $state, XisoApi, Device,Auth, DownloadedContent){
+    //다필요없고, 채널 고르면 서버에다가 기기별 저장된 채널과 컨텐츠로 바꿔줌.
+    //ㅅㅂ 그냥 아이프레임처리해?
+    //그래그러자
+    //그래도 양심은있으니 최소한 암호화토큰은 보내자.
+    var device = Device.get();
+    $scope.main_server = XisoApi.server_url;
+    $scope.channel_list_url = "/channel/?device=" + device.uuid;
+    $scope.content_srl = window.localStorage['content_srl'];
+  //서버의 컨텐츠번호가 바뀌는지 체크
+    setInterval(function(){
+      Auth.get().then(function(res){
+        console.log(res);
+        console.log(res.result.content_srl);
+        console.log(DownloadedContent.get().content_srl);
+        if(res.result.content_srl != DownloadedContent.get().content_srl){
+          window.localStorage['content_srl'] = res.result.content_srl;
+          $state.go('player');
+        }
+      });
+    },3000);
+
+    $scope.goState = function(state_name){
+      $state.go(state_name);
+    };
+
+});
+
+app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordovaFileTransfer, $timeout, FileObj, Server, Auth, Tpl, DownloadedContent, Content, Channel, Viewcount, $state){
     $scope.time_id1 = null;
     $scope.is_downloding = false;
     $scope.tpls = Tpl;
     $scope.is_first = true;
-
     $scope.player = {};
 
-    //채널코드. 단말기의 인증여부를 검사함. localStorage에 별도 저장하고 매번 호출해와야함.
-    // $scope.player.channel = "0000";
-
     //우하단 버튼노출유무
-    $scope.player.didmode = true;
+    $scope.player.didmode = false;
+    // console.log($scope.template_mode);
+    // if($scope.template_mode && $scope.tpls[$scope.template_mode].is_did == "N") $scope.showFixedBtn = true;
+    $scope.goState = function(state_name){
+      $state.go(state_name);
+    };
+
 
     $scope.seq_code = "";
     $scope.time_ids = [];
@@ -124,7 +231,7 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
     $scope.openWebView = function(url){
         window.open(url, '_blank', 'closebuttoncaption=닫기, location=no, zoom=no');
     };
-    
+
     $scope.play_toggle = function(data, seq_code, index){
         console.log(data);
         console.log(seq_code + '_' +index);
@@ -183,35 +290,6 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
 
     $scope.openCordovaWebView = function(url){ // Open cordova webview if the url is in the whitelist otherwise opens in app browser
         window.open(url,'_self');
-    };
-
-    //다른채널 보기
-    //데모 목록
-    $scope.channel_list = Channel.getList();
-
-    $scope.changeChannel = function(channel){
-        //마찬가지로 localStorage에 저장해야하고
-
-        //새 채널에관한 시퀀스정보를 받아서
-
-        //다운로드해야함. (프로그래스)
-
-        //그리고 플레이어의 채널을 변경.
-        $scope.player.channel = channel;
-        $scope.closeChannelList();
-    };
-
-    $ionicModal.fromTemplateUrl('./templates/channel_list.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.modal = modal;
-    });
-    $scope.openChannelList = function() {
-        $scope.modal.show();
-    };
-    $scope.closeChannelList = function() {
-        $scope.modal.hide();
     };
 
     $scope.down_total = 0; // 다운로드 해야 될 파일 수
@@ -323,30 +401,18 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
         console.log('check Channel');
 
         Auth.get().then(function(res){
-            // console.log(res);
+            console.log(res);
             $scope.auth_no = res.result.auth_no;
 
             // 데이터 서버 주소가 있으면 (채널 ID 가 있으면) 데이터 서버에서 컨텐츠 정보를 받아온다.
             if(res.result.server_url){
-
                 Server.set({url: res.result.server_url, is_main: 'N'});
-
                 Content.get(res.result).then(function(res2){
-                    // console.log(res2);
-
                     $scope.setContent(res2.result);
                 });
-
-            // 채널 ID 가 없으면 인증번호를 받고 데모 컨텐츠 정보를 받아온다
             }else{
-
-                Server.setMain();
-
-                Content.get().then(function(res2){
-                    console.log(res2);
-
-                    $scope.setContent(res2.result);
-                });
+            //채널이없으면 채널목록으로 보냄.
+                $state.go('channel_list');
             }
         });
 
@@ -416,7 +482,7 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
                 }
             }
         }
-        
+
     };
 
     $scope.time_id1 = setInterval($scope.checkChannel, 2000);

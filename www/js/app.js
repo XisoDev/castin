@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('didplayer', ['ionic','ngCordova']);
 
-app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, ClockSrv, $filter) {
+app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, ClockSrv, $filter,$state) {
     $ionicPlatform.ready(function() {
         if(window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -18,8 +18,8 @@ app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, Clock
             cordova.plugins.Keyboard.disableScroll(true);
         }
         if(window.StatusBar) {
-        // StatusBar.styleDefault();
-        StatusBar.hide();
+          // StatusBar.styleDefault();
+          StatusBar.hide();
         }
 
         FileObj.set(cordova.file);
@@ -60,14 +60,55 @@ app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, Clock
 
         return false;
     }, 101);
+
+
+    //stateChange event
+    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+      var nick_name = window.localStorage['nick_name'];
+      var agreement = window.localStorage['agreement'];
+      var content_srl = window.localStorage['content_srl'];
+      if (toState.agreeRequired && agreement != 'Y'){
+        $state.transitionTo("agreement");
+        event.preventDefault();
+      }
+      if (toState.authRequired && !nick_name){
+        $state.transitionTo("login");
+        event.preventDefault();
+      }
+      if (toState.contentRequired && !content_srl && nick_name){
+        console.log("기각");
+        $state.transitionTo("channel_list");
+        event.preventDefault();
+      }
+    });
+
+
 });
 
 app.config(function($stateProvider,$urlRouterProvider) {
   $stateProvider
+    .state('login', {
+      url:'/login',
+      templateUrl : './templates/login.html',
+      controller : 'loginCtrl'
+    })
+    .state('agreement', {
+      url:'/agreement',
+      templateUrl : './templates/agreement.html',
+      controller : 'agreeCtrl'
+    })
+    .state('channel_list', {
+      url:'/channel_list',
+      templateUrl : './templates/channel_list.html',
+      controller : 'channelCtrl'
+    })
     .state('player', {
       url: '/',
       templateUrl: './templates/player.html',
-      controller: "playerCtrl"
+      controller: "playerCtrl",
+      authRequired: true,
+      agreeRequired: true,
+      contentRequired: true
     });
   $urlRouterProvider.otherwise("/");
 });

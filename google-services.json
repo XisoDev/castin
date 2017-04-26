@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "184121979557",
-    "firebase_url": "https://didplayer-ef340.firebaseio.com",
-    "project_id": "didplayer-ef340",
-    "storage_bucket": "didplayer-ef340.appspot.com"
+    "project_number": "16335973078",
+    "firebase_url": "https://castin-b24b5.firebaseio.com",
+    "project_id": "castin-b24b5",
+    "storage_bucket": "castin-b24b5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:184121979557:android:d1af2f7bfd36fbb7",
+        "mobilesdk_app_id": "1:16335973078:android:c8a0891ff3774bf6",
         "android_client_info": {
-          "package_name": "kr.co.amuz.softgear.didplayer"
+          "package_name": "kr.co.amuz.softgear.castin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "184121979557-g487niajmv9r4n5mmjsp9sh3c8045gkv.apps.googleusercontent.com",
+          "client_id": "16335973078-3gvdd2anitfp2u24qkg4df3gcksn0i0m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD9mrzfLinCjspXvNd8vM5BemsBBD9SPCA"
+          "current_key": "AIzaSyBonkFBpOX5r0Y_CVIFgmUkfvuzmR06u8s"
         }
       ],
       "services": {

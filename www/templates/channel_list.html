@@ -1,14 +1,20 @@
-<ion-modal-view>
-  <ion-header-bar>
-    <h1 class="title">채널목록</h1>
-    <button ng-click="closeChannelList()" class="button-dark button"><i class="ion-close"></i> 닫기</button>
-  </ion-header-bar>
-  <ion-content>
-    <div class="channel_item" ng-repeat="channel in channel_list">
-      <a href="#" ng-click="changeChannel(channel.channel)">
-        <img ng-src="{{channel.thumbnail}}" width="100%" />
-        <h4><small>{{channel.category}}</small> {{channel.title}}</h4>
-      </a>
+
+
+<ion-content>
+  <div id="loginWrap" class="move">
+    <button id="backbutton" class="button-small button button-royal wow fadeInDown" ng-click="goState('setting')">
+      <i class="xi-cog"></i>
+      설정
+    </button>
+    <div id="login" class="agreement">
+      <h1 class="softgearSmall wow fadeInDown" ng-show="!content_srl">
+        <small>soft</small>
+        <b>GEAR</b>
+      </h1>
+      <h1 class="softgearSmall wow fadeInDown" ng-show="content_srl" ng-click="goState('player')">
+        <i class="xi-close"></i><b>닫기</b>
+      </h1>
+      <iframe ng-src="{{main_server | trustUrl : channel_list_url}}" style="width:100%; height:100%;" allowtransparency="true"></iframe>
     </div>
-  </ion-content>
-</ion-modal-view>
+  </div>
+</ion-content>

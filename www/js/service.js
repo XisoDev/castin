@@ -190,6 +190,27 @@ app
     return self;
 })
 
+
+.factory('Toast', function($cordovaToast){
+  return function(text) {
+    $cordovaToast.showShortBottom(text);
+  }
+})
+
+
+.factory('Agreement', function(XisoApi){
+  var service = {};
+
+  service.getAgreement = function(){
+    return XisoApi.send('config.getConfig', {name : 'castin_agreement'});
+  };
+  service.getPrivacy = function(){
+    return XisoApi.send('config.getConfig', {name : 'castin_privacy'});
+  };
+
+  return service;
+})
+
 .factory("Server", function(){
     var self = this;
 
@@ -257,8 +278,7 @@ app
 
     self.get = function(){
         var device = Device.get();
-        var params = { uuid : device.uuid, model : device.model, serial : device.serial, version : device.version };
-        // console.log(params);
+        var params = { uuid : device.uuid, model : device.model, serial : device.serial, version : device.version, is_did : "N", nick_name : window.localStorage['nick_name'] };
 
         //플레이어의 uuid로 인증번호 생성. 인증번호 받아옴. 채널ID가 있으면 채널테이블에서 SERVER URL 받아옴
         return XisoApi.send('player.procCheckPlayer', params);
@@ -287,6 +307,7 @@ app
     var self = this;
 
     self.get = function(params){
+        params.is_did = "N";
         return XisoApi.send('content.getContent', params);
     };
 
@@ -298,61 +319,6 @@ app
 
     self.getList = function() {
         var channel_list = [];
-        channel_list[0] = {
-            'channel': '0000',
-            'thumbnail': "./demo/1/1.jpg",
-            'category': 'redetto',
-            'title': "레데또 채널"
-        };
-        channel_list[1] = {
-            'channel': '0000',
-            'thumbnail': "./demo/2/1.jpg",
-            'category': '의류/잡화',
-            'title': "레데또 채널"
-        };
-        channel_list[2] = {
-            'channel': '0000',
-            'thumbnail': "./demo/3/1.jpg",
-            'category': '주식',
-            'title': "주식의 제왕, 오버코드입니다."
-        };
-        channel_list[3] = {
-            'channel': '0000',
-            'thumbnail': "./demo/4/1.jpg",
-            'category': 'PC/가전',
-            'title': "초대박 가전제품 박람회"
-        };
-        channel_list[4] = {
-            'channel': '0000',
-            'thumbnail': "./demo/1/1.jpg",
-            'category': 'redetto',
-            'title': "레데또 채널"
-        };
-        channel_list[5] = {
-            'channel': '0000',
-            'thumbnail': "./demo/2/1.jpg",
-            'category': '의류/잡화',
-            'title': "레데또 채널"
-        };
-        channel_list[6] = {
-            'channel': '0000',
-            'thumbnail': "./demo/3/1.jpg",
-            'category': '주식',
-            'title': "주식의 제왕, 오버코드입니다."
-        };
-        channel_list[7] = {
-            'channel': '0000',
-            'thumbnail': "./demo/4/2.jpg",
-            'category': 'PC/가전',
-            'title': "초대박 가전제품 박람회"
-        };
-        channel_list[8] = {
-            'channel': '0000',
-            'thumbnail': "./demo/5/1.jpg",
-            'category': 'PC/가전',
-            'title': "초대박 가전제품 박람회"
-        };
-
         return channel_list;
     };
 
@@ -449,6 +415,8 @@ app
 
         return result;
     };
+
+    service.server_url = baseUrl;
 
     return service;
 });
