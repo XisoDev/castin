@@ -9,3 +9,4 @@ cordova plugin rm cordova-plugin-statusbar
 cordova plugin rm cordova-plugin-velda-devicefeedback
 cordova plugin rm cordova-plugin-whitelist
 cordova plugin rm ionic-plugin-keyboard
+cordova plugin rm cordova-plugin-x-toast 

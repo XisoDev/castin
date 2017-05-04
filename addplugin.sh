@@ -9,3 +9,4 @@ cordova plugin add cordova-plugin-inappbrowser
 cordova plugin add cordova-plugin-media
 cordova plugin add cordova-plugin-velda-devicefeedback
 cordova plugin add cordova-plugin-file-transfer
+cordova plugin add cordova-plugin-x-toast

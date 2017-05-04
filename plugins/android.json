@@ -44,6 +44,9 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "kr.co.amuz.softgear.castin"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "kr.co.amuz.softgear.castin"
         }
     },
     "dependent_plugins": {

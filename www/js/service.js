@@ -4,34 +4,34 @@ app
     return {
 
         "live_5_v2_v3" : {
-          title : '방송용 1',
-          sequence_count : 3,
-          is_notice : 'N',
-          is_did : 'N'
+            title : '방송용 1',
+            sequence_count : 4,
+            is_notice : 'N',
+            is_did : 'N'
         },
         "live_6_v2_h1_v3" : {
-          title : '방송용 2',
-          sequence_count : 3,
-          is_notice : 'Y',
-          is_did : 'N'
+            title : '방송용 2',
+            sequence_count : 4,
+            is_notice : 'Y',
+            is_did : 'N'
         },
         "live_5_h2_v3" : {
-          title : '방송용 3',
-          sequence_count : 2,
-          is_notice : 'N',
-          is_did : 'N'
+            title : '방송용 3',
+            sequence_count : 3,
+            is_notice : 'Y',
+            is_did : 'N'
         },
         "live_6_v_h2_v3" : {
-          title : '방송용 4',
-          sequence_count : 4,
-          is_notice : 'N',
-          is_did : 'N'
+            title : '방송용 4',
+            sequence_count : 5,
+            is_notice : 'N',
+            is_did : 'N'
         },
         "live_5_v2_v2_v3_2_1" : {
-          title : '방송용 5',
-          sequence_count : 3,
-          is_notice : 'N',
-          is_did : 'N'
+            title : '방송용 5',
+            sequence_count : 4,
+            is_notice : 'N',
+            is_did : 'N'
         },
         "did_r" : {
           title : '가로형 1',
