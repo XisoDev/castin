@@ -70,20 +70,22 @@ app.controller('loginCtrl', function($scope, $state, Toast){
 
     window.localStorage['nick_name'] = $scope.nick_name;
 
-    $state.go('player');
+    $state.go('agreement');
   }
 
 });
 
 //다른채널 보기
-app.controller('channelCtrl', function($scope, $state, XisoApi, Device,Auth, DownloadedContent){
+app.controller('channelCtrl', function($scope, $state, XisoApi, Device,Auth, DownloadedContent, $stateParams){
     //다필요없고, 채널 고르면 서버에다가 기기별 저장된 채널과 컨텐츠로 바꿔줌.
     //ㅅㅂ 그냥 아이프레임처리해?
     //그래그러자
     //그래도 양심은있으니 최소한 암호화토큰은 보내자.
     var device = Device.get();
     $scope.main_server = XisoApi.server_url;
-    $scope.channel_list_url = "/channel/?device=" + device.uuid;
+    var url = "/channel/?device=" + device.uuid;
+    if($stateParams.mode) url += "&mode=" + $stateParams.mode;
+    $scope.channel_list_url = url;
     $scope.content_srl = window.localStorage['content_srl'];
   //서버의 컨텐츠번호가 바뀌는지 체크
     setInterval(function(){
@@ -93,7 +95,7 @@ app.controller('channelCtrl', function($scope, $state, XisoApi, Device,Auth, Dow
         console.log(DownloadedContent.get().content_srl);
         if(res.result.content_srl != DownloadedContent.get().content_srl){
           window.localStorage['content_srl'] = res.result.content_srl;
-          $state.go('player');
+          document.location.href = './index.html';
         }
       });
     },3000);
@@ -104,8 +106,8 @@ app.controller('channelCtrl', function($scope, $state, XisoApi, Device,Auth, Dow
 
 });
 
-app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordovaFileTransfer, $timeout, FileObj, Server, Auth, Tpl, DownloadedContent, Content, Channel, Viewcount, $state){
-    setTimeout(function(){
+app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $cordovaFileTransfer, $timeout, FileObj, Server, Auth, Tpl, DownloadedContent, Content, Viewcount, $state){
+    var splash_time = setTimeout(function(){
       jQuery("#splash").fadeOut();
     },5000);
 
@@ -119,8 +121,8 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
     $scope.player.didmode = false;
     // console.log($scope.template_mode);
     // if($scope.template_mode && $scope.tpls[$scope.template_mode].is_did == "N") $scope.showFixedBtn = true;
-    $scope.goState = function(state_name){
-      $state.go(state_name);
+    $scope.goState = function(state_name,params){
+      $state.go(state_name,params);
     };
 
 
@@ -275,13 +277,20 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
     };
 
     $scope.go_more = function(data, seq_code, index){
-        // console.log('go more clicked');
-        // 'http://','https://','tel:','sms:','mailto:'
-        if(data.url_prefix == 'http://' || data.url_prefix == 'https://'){
-            $scope.openInAppBrowser(data.url_prefix + data.url);
-        } else {
-            window.location.href = data.url_prefix + data.url;
-        }
+      if(data.url_prefix == 'content:'){
+        Content.update(data.url).then(function(res){
+          if(res.error == 0){
+            document.location.reload();
+          }else{
+            alert(res.message);
+            console.log(res);
+          }
+        });
+      } else if(data.url_prefix == 'http://' || data.url_prefix == 'https://'){
+        $scope.openInAppBrowser(data.url_prefix + data.url);
+      } else {
+        window.location.href = data.url_prefix + data.url;
+      }
     };
 
     $scope.openInExternalBrowser = function(url){ // Open in external browser
@@ -317,7 +326,7 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
                 url = Server.getMain();
             }
 
-            var path = DownloadedContent.get().content_srl + timelines[$scope.down_cur].uploaded_filename.substr(timelines[$scope.down_cur].uploaded_filename.lastIndexOf('/'));
+            var path = DownloadedContent.getNewContent().content_srl + timelines[$scope.down_cur].uploaded_filename.substr(timelines[$scope.down_cur].uploaded_filename.lastIndexOf('/'));
             var targetPath = fileObj.externalDataDirectory + path;
             // var targetPath = fileObj.dataDirectory + path;
             // console.log(targetPath);
@@ -345,6 +354,11 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
             }
         }else{
             $scope.is_downloading = false;
+            //바꿔치기 하고
+            window.localStorage['play_content'] = window.localStorage['downloaded_content'];
+            //찌꺼기제거
+            delete window.localStorage['downloaded_content'];
+
             console.log('파일 다운로드 완료');
             document.location.reload();
         }
@@ -391,10 +405,36 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
 
             this[clip.seq].push(clip);
         },sequences);
-
+        //
         angular.forEach(sequences, function(sequence, seq_idx){
             $scope.buildSlider(seq_idx, sequence);
         });
+        //
+        // var prom = [];
+        // angular.forEach(sequences, function(sequence, seq_idx){
+        //   prom.push($scope.buildSlider(seq_idx, sequence));
+        // });
+        // $q.all(prom).then(function () {
+        //   jQuery("video").each(function(){
+        //     if(jQuery(this).width() >= jQuery(this).height()){
+        //       if(jQuery(this).parent().width() >= jQuery(this).parent().height()){
+        //         jQuery(this).css('width','100%', 'height','auto');
+        //         console.log("A");
+        //       }else{
+        //         jQuery(this).css('height','100%', 'width','auto');
+        //         console.log("Ad");
+        //       }
+        //     }else{
+        //       if(jQuery(this).parent().width() >= jQuery(this).parent().height()){
+        //         jQuery(this).css('height','100%', 'width','auto');
+        //         console.log("Ab");
+        //       }else{
+        //         jQuery(this).css('width','100%', 'height','auto');
+        //         console.log("Ac");
+        //       }
+        //     }
+        //   });
+        // });
 
         clearInterval($scope.time_id1);
         $scope.time_id1 = setInterval($scope.checkChannel, 20000);    // 30초 마다 갱신
@@ -455,13 +495,12 @@ app.controller('playerCtrl', function($scope, $ionicModal, $cordovaFile, $cordov
             var timelines = $scope.arr_2D_to_1D(content.timelines);
 
             if(!DownloadedContent.get() || (DownloadedContent.get().content_srl != content.content_srl) || !$scope.isSameContent(DownloadedContent.get(), content)){
-
                 console.log('down');
-
-
                 DownloadedContent.set(content); // content 정보 기기에 저장
 
                 $scope.is_downloading = true;
+                clearTimeout(splash_time);
+
                 $scope.down_total = timelines.length;
                 $scope.down_cur = 0;
 

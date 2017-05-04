@@ -290,10 +290,16 @@ app
 .factory("DownloadedContent", function(){
     var self = this;
 
-    self.get = function(){
-        if(!window.localStorage['downloaded_content']) return false;
+    self.getNewContent = function(){
+      if(!window.localStorage['downloaded_content']) return false;
 
-        return JSON.parse(window.localStorage['downloaded_content']);
+      return JSON.parse(window.localStorage['downloaded_content']);
+    }
+
+    self.get = function(){
+        if(!window.localStorage['play_content']) return false;
+
+        return JSON.parse(window.localStorage['play_content']);
     };
 
     self.set = function(content){
@@ -303,12 +309,22 @@ app
     return self;
 })
 
-.factory("Content", function(XisoApi){
+.factory("Content", function(XisoApi,Device){
     var self = this;
 
     self.get = function(params){
         params.is_did = "N";
         return XisoApi.send('content.getContent', params);
+    };
+
+    self.update = function(content_srl){
+      var device = Device.get();
+      var params = {
+        uuid : device.uuid,
+        content_srl : content_srl
+      }
+
+      return XisoApi.send('player.procUpdateByPlayer',params);
     };
 
     return self;

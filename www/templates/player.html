@@ -1,13 +1,23 @@
 <ion-view view-title="DID PLAYER" name="playerView">
   <ion-content overflow-scroll="false">
-    <div id="splash" style="position:fixed; background-size:cover; background-position:center; top:0; left:0; width:100%; z-index:1000; background-image: url('./img/splash.png');height:100%;">
+    <div id="splash" style="position:fixed; background-size:cover; background-position:center; top:0; left:0; width:100%; z-index:900; background-image: url('./img/splash.png');height:100%;">
     </div>
 
+    <a class="bar_btn" ng-click="goState('channel_list',{mode:'my'})">
+      <i class="xi-bars"></i>
+    </a>
     <div class="progress" ng-if="is_downloading">
-        <p class="percent">{{progress}}%</p>
-        <p class="total">downloading.. ({{down_cur+1}}/{{down_total}})</p>
+      <div class="total">
+        <p class="percent" style="width:{{progress}}%"></p>
+        새로운 컨텐츠 {{down_total}} 개 중 {{down_cur+1}}번째를 다운로드 하고 있습니다.
+      </div>
     </div>
-      <div ng-show="player.clock != 'N'" class="clock" ng-class="{'clock_top': player.clock == 'T', 'clock_mid': player.clock == 'M', 'clock_bot': player.clock == 'B'}">{{clock}}</div>
+
+
+      <div ng-if="player.clock != 'N'" class="clock" ng-class="{'clock_top': player.clock == 'T', 'clock_mid': player.clock == 'M', 'clock_bot': player.clock == 'B'}">
+        <b>{{clock_HM}}</b>
+        {{clock_YMD}}
+      </div>
       <div id="player_area" class="fullheight" ng-include="'./templates/tpls/' + template_mode + '.html'" ng-attr-style="{{player.background ? 'background-image:url(' + player.background + ');' : undefined}}"></div>
   </ion-content>
 </ion-view>

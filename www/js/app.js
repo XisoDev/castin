@@ -32,7 +32,12 @@ app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, Clock
 
     ClockSrv.clock(function() {
         // console.log($filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss'));
-        $rootScope.clock = $filter('date')(Date.now(), 'yyyy/MM/dd HH:mm:ss');
+        var today = new Date();
+        var week_arr = new Array('일', '월', '화', '수', '목', '금', '토');
+        var week = week_arr[today.getDay()];
+
+        $rootScope.clock_HM = $filter('date')(Date.now(), 'HH:mm');
+        $rootScope.clock_YMD = $filter('date')(Date.now(), 'MM월 dd일 ') + week + "요일";
     });
 
     //back button action
@@ -56,7 +61,11 @@ app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, Clock
                 ]
             });
         };
-        $rootScope.exitApp();
+        if($state.current.name == 'channel_list'){
+          $state.go('player');
+        }else{
+          $rootScope.exitApp();
+        }
 
         return false;
     }, 101);
@@ -99,6 +108,9 @@ app.config(function($stateProvider,$urlRouterProvider) {
     })
     .state('channel_list', {
       url:'/channel_list',
+      params: {
+        mode: null
+      },
       templateUrl : './templates/channel_list.html',
       controller : 'channelCtrl'
     })
