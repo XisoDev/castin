@@ -15,6 +15,14 @@
         "is_top_level": false,
         "variables": {}
     },
+    "cordova-plugin-x-toast": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-x-toast"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "cordova-plugin-device": {
         "source": {
             "type": "registry",
@@ -34,7 +42,7 @@
     "cordova-plugin-splashscreen": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-splashscreen@4.0.2"
+            "id": "cordova-plugin-splashscreen@4.0.3"
         },
         "is_top_level": true,
         "variables": {}
@@ -42,7 +50,7 @@
     "cordova-plugin-statusbar": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-statusbar@2.2.2"
+            "id": "cordova-plugin-statusbar@2.2.3"
         },
         "is_top_level": true,
         "variables": {}
@@ -55,6 +63,20 @@
         "is_top_level": true,
         "variables": {}
     },
+    "cordova-plugin-crosswalk-webview": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-crosswalk-webview@2.3.0"
+        },
+        "is_top_level": true,
+        "variables": {
+            "XWALK_VERSION": "23+",
+            "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
+            "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
+            "XWALK_MODE": "embedded",
+            "XWALK_MULTIPLEAPK": "true"
+        }
+    },
     "cordova-plugin-fcm": {
         "source": {
             "type": "registry",
@@ -66,7 +88,7 @@
     "cordova-plugin-inappbrowser": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-inappbrowser@1.7.0"
+            "id": "cordova-plugin-inappbrowser@1.7.1"
         },
         "is_top_level": true,
         "variables": {}
@@ -74,7 +96,7 @@
     "cordova-plugin-media": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-media@3.0.0"
+            "id": "cordova-plugin-media@3.0.1"
         },
         "is_top_level": true,
         "variables": {}
@@ -91,22 +113,6 @@
         "source": {
             "type": "registry",
             "id": "cordova-plugin-file-transfer"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-crosswalk-webview": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-crosswalk-webview@2.3.0"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-x-toast": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-x-toast"
         },
         "is_top_level": true,
         "variables": {}

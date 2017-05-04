@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="kr.co.amuz.softgear.castin" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>CAST IN</name>
+  <name>홈방캐스트</name>
   <description>
         홈방 TV용 플레이어 앱
     </description>
@@ -25,7 +25,7 @@
   <preference name="FadeSplashScreenDuration" value="0"/>
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
-  <preference name="SplashScreen" value="screen"/>
+  <preference name="SplashScreen" value="none"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
