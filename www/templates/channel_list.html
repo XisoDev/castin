@@ -1,20 +1,4 @@
-
-
-<ion-content>
-  <div id="loginWrap" class="move">
-    <button id="backbutton" class="button-small button button-royal wow fadeInDown" ng-click="goState('setting')">
-      <i class="xi-cog"></i>
-      설정
-    </button>
-    <div id="login" class="agreement">
-      <h1 class="softgearSmall wow fadeInDown" ng-show="!content_srl">
-        <small>soft</small>
-        <b>GEAR</b>
-      </h1>
-      <h1 class="softgearSmall wow fadeInDown" ng-show="content_srl" ng-click="goState('player')">
-        <i class="xi-close"></i><b>닫기</b>
-      </h1>
-      <iframe ng-src="{{main_server | trustUrl : channel_list_url}}" style="width:100%; height:100%;" allowtransparency="true"></iframe>
-    </div>
-  </div>
-</ion-content>
+<h1 ng-show="content_srl" ng-click="goState('player')" style="position:fixed;right:0;top:0;padding:10px; font-size:14px; color:#FFF; background:rgb(84,211,140);">
+  <i class="xi-close-thin"></i> 닫기
+</h1>
+<iframe ng-src="{{main_server | trustUrl : channel_list_url}}" style="width:100%; height:100%;" allowtransparency="true"></iframe>
