@@ -163,6 +163,7 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
             }
         //이번 클립이 비디오가 아닐때
         }else{
+            clearTimeout($scope.time_ids[seq_code + '_' + data_obj[clip_idx].file_srl]);
             //build next_seq
             $scope.time_ids[seq_code + '_' + data_obj[clip_idx].file_srl] = setTimeout(function () {
                 if (data_obj[parseInt(clip_idx) + 1]) {
@@ -237,8 +238,19 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
     $scope.openWebView = function(url){
         window.open(url, '_blank', 'closebuttoncaption=닫기, location=no, zoom=no');
     };
+    
+    // 플레이 컨트롤
+    $scope.control_toggle = function(seq_code){
+        // data.is_show_ctrl = !data.is_show_ctrl;
+        $scope.sequence[seq_code].is_show_ctrl = !$scope.sequence[seq_code].is_show_ctrl;
+        // console.log(seq_code);
+    };
 
-    $scope.play_toggle = function(data, seq_code, index){
+    // 플레이, 일시정지 버튼
+    $scope.play_toggle = function(seq_code){
+        var index = jQuery("#"+seq_code).find(".bp-hs_inner__item.is-active").attr("data-index");
+        var data = $scope.sequence[seq_code][index];
+
         console.log(data);
         console.log(seq_code + '_' +index);
         if(data.clip_type == 'V') {
@@ -248,9 +260,11 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
             if(data.is_pause) {
                 video.play();
                 data.is_pause = false;
+                $scope.sequence[seq_code].is_pause = false;
             }else{
                 video.pause();
                 data.is_pause = true;
+                $scope.sequence[seq_code].is_pause = true;
             }
         }else if(data.clip_type == 'I'){
             //이미지일때
@@ -266,16 +280,49 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
                     }, 3000);
                 }
                 data.is_pause = false;
+                $scope.sequence[seq_code].is_pause = false;
             }else{
                 clearTimeout($scope.time_ids[seq_code + '_' + data.file_srl]);
                 data.is_pause = true;
+                $scope.sequence[seq_code].is_pause = true;
             }
         }else{
             //URL 일때
 
         }
     };
+    
+    // 다음, 이전 버튼
+    $scope.play_next_prev = function(seq_code, is_next){
+        var index = jQuery("#"+seq_code).find(".bp-hs_inner__item.is-active").attr("data-index");
+        var data = $scope.sequence[seq_code][index];
+console.log('----(1)');
+console.log($scope.time_ids);
+        // safeApply($scope, function(){
+            clearTimeout($scope.time_ids[seq_code + '_' + data.file_srl]);
+            $scope.time_ids[seq_code + '_' + data.file_srl] = undefined;
+        // });
+console.log('----(2)');
+console.log($scope.time_ids);
 
+        if(is_next){
+            // 다음 클립을 재생
+            if($scope.sequence[seq_code][index+1]) {
+                $scope.next(seq_code, $scope.sequence[seq_code], index + 1);
+            }else{
+                $scope.next(seq_code, $scope.sequence[seq_code], 0);
+            }
+        }else{
+            // 이전 클립을 재생
+            if(index == 0){
+                $scope.next(seq_code, $scope.sequence[seq_code], $scope.sequence[seq_code].length - 1);
+            }else{
+                $scope.next(seq_code, $scope.sequence[seq_code], index - 1);
+            }
+        }
+    };
+    
+    // 바로가기 버튼
     $scope.go_more = function(data, seq_code, index){
       if(data.url_prefix == 'content:'){
         Content.update(data.url).then(function(res){
@@ -530,9 +577,9 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
 
     $scope.time_id1 = setInterval($scope.checkChannel, 2000);
 
-    // function safeApply(scope, fn) {
-    //     (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
-    // }
+    function safeApply(scope, fn) {
+        (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
+    }
 
     // 같은 타임라인인지 비교
     $scope.isSameContent = function(a, b){
