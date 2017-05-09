@@ -90,9 +90,6 @@ app.controller('channelCtrl', function($scope, $state, XisoApi, Device,Auth, Dow
   //서버의 컨텐츠번호가 바뀌는지 체크
     setInterval(function(){
       Auth.get().then(function(res){
-        console.log(res);
-        console.log(res.result.content_srl);
-        console.log(DownloadedContent.get().content_srl);
         if(res.result.content_srl != DownloadedContent.get().content_srl){
           window.localStorage['content_srl'] = res.result.content_srl;
           document.location.href = './index.html';
@@ -255,14 +252,15 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
         console.log(seq_code + '_' +index);
         if(data.clip_type == 'V') {
             //비디오일때
-            var video = jQuery('#' + seq_code + '_' + index)[0];   //#sequence0_0
+            var video2 = jQuery('#' + seq_code + '_' + index)[0];   //#sequence0_0
+            safeApply($scope, function(){});
             // video.paused ? video.play() : video.pause();
             if(data.is_pause) {
-                video.play();
+                video2.play();
                 data.is_pause = false;
                 $scope.sequence[seq_code].is_pause = false;
             }else{
-                video.pause();
+                video2.pause();
                 data.is_pause = true;
                 $scope.sequence[seq_code].is_pause = true;
             }
@@ -283,6 +281,7 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
                 $scope.sequence[seq_code].is_pause = false;
             }else{
                 clearTimeout($scope.time_ids[seq_code + '_' + data.file_srl]);
+                $scope.time_ids[seq_code + '_' + data.file_srl] = undefined;
                 data.is_pause = true;
                 $scope.sequence[seq_code].is_pause = true;
             }
@@ -290,6 +289,8 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
             //URL 일때
 
         }
+
+        safeApply($scope, function(){});
     };
     
     // 다음, 이전 버튼
