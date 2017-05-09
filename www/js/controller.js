@@ -296,14 +296,11 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
     $scope.play_next_prev = function(seq_code, is_next){
         var index = jQuery("#"+seq_code).find(".bp-hs_inner__item.is-active").attr("data-index");
         var data = $scope.sequence[seq_code][index];
-console.log('----(1)');
-console.log($scope.time_ids);
-        // safeApply($scope, function(){
-            clearTimeout($scope.time_ids[seq_code + '_' + data.file_srl]);
-            $scope.time_ids[seq_code + '_' + data.file_srl] = undefined;
-        // });
-console.log('----(2)');
-console.log($scope.time_ids);
+
+        clearTimeout($scope.time_ids[seq_code + '_' + data.file_srl]);
+        $scope.time_ids[seq_code + '_' + data.file_srl] = undefined;
+
+        $scope.sequence[seq_code].is_pause = false;
 
         if(is_next){
             // 다음 클립을 재생

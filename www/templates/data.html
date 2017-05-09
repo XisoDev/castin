@@ -1,19 +1,15 @@
-<!--function play_toggle(seq_code)-->
-<!--var data_index = jQuery("#"+seq_code).find(".bp-hs_inner__item.is-active").attr("data-index");-->
-<!--var data = $scope.sequence[seq_code][data_index];-->
-
-<!--가운데 플레이, 일시정지 버튼-->
+<div class="play_control" ng-class="{'active':sequence[seq_code].is_show_ctrl}" style="position:absolute;z-index:10;width:100%;height:100%;" ng-click="control_toggle(seq_code)"></div>
 <div class="playground">
-    <span ng-click="play_toggle(seq_code)" class="ctrl_btn play" ng-class="{'active':sequence[seq_code].is_show_ctrl}">
+    <span ng-click="play_toggle(seq_code)" class="ctrl_btn play" ng-class="{'active':sequence[seq_code].is_show_ctrl}" ng-show="sequence[seq_code].is_show_ctrl">
         <i ng-class="{'ion-ios-pause': !sequence[seq_code].is_pause, 'ion-ios-play': sequence[seq_code].is_pause}"></i>
     </span>
-    <span ng-click="play_next_prev(seq_code, false)" class="ctrl_btn prev" ng-class="{'active':sequence[seq_code].is_show_ctrl}">
+    <span ng-click="play_next_prev(seq_code, false)" class="ctrl_btn prev" ng-class="{'active':sequence[seq_code].is_show_ctrl}" ng-show="sequence[seq_code].is_show_ctrl">
         <i class="ion-ios-arrow-back"></i>
     </span>
-    <span ng-click="play_next_prev(seq_code, true)" class="ctrl_btn next" ng-class="{'active':sequence[seq_code].is_show_ctrl}">
+    <span ng-click="play_next_prev(seq_code, true)" class="ctrl_btn next" ng-class="{'active':sequence[seq_code].is_show_ctrl}" ng-show="sequence[seq_code].is_show_ctrl">
         <i class="ion-ios-arrow-forward"></i>
     </span>
-    <span class="ctrl_btn full" ng-class="{'active':sequence[seq_code].is_show_ctrl}" onclick="jQuery(this).find('i').toggleClass('ion-android-expand').toggleClass('ion-android-contract'); jQuery(this).parent('.playground').toggleClass('fullsize'); jQuery(this).parent('.playground').next('.bp-hs_inner').toggleClass('fullsize'); jQuery(this).siblings('.ctrl_btn').toggleClass('fullsize'); jQuery(this).toggleClass('fullsize')">
+    <span class="ctrl_btn full" ng-class="{'active':sequence[seq_code].is_show_ctrl}" onclick="jQuery(this).find('i').toggleClass('ion-android-expand').toggleClass('ion-android-contract'); jQuery(this).parent('.playground').toggleClass('fullsize'); jQuery(this).parent('.playground').next('.bp-hs_inner').toggleClass('fullsize'); jQuery(this).siblings('.ctrl_btn').toggleClass('fullsize'); jQuery(this).toggleClass('fullsize')" ng-show="sequence[seq_code].is_show_ctrl">
         <i class="ion-android-expand"></i>
     </span>
 </div>
@@ -26,15 +22,9 @@
        data-index="{{$index}}"
     >
         <div style="position:relative; width:100%; height: 100%;">
-            <!--<div style="position:absolute;z-index:10;width:100%;height:100%;" ng-click="play_toggle(data, seq_code, $index)"></div>-->
-            <div class="play_control" ng-class="{'active':sequence[seq_code].is_show_ctrl}" style="position:absolute;z-index:10;width:100%;height:100%;" ng-click="control_toggle(seq_code)"></div>
-
             <span class="ctrl_btn more" ng-click="go_more(data, seq_code, $index)" ng-class="{'active':sequence[seq_code].is_show_ctrl && (data.url && data.url!='null' && data.url_prefix && data.url_prefix != 'null')}">
                 <button class="button button-balanced button-small">바로가기</button>
             </span>
-
-            <!--<a class="more" ng-click="go_more(data, seq_code, $index)" ng-show="data.is_pause && (data.url && data.url!='null' && data.url_prefix && data.url_prefix != 'null')">MORE</a>-->
-            <!--<i class="ion-ios-pause" ng-show="data.is_pause"></i>-->
             <div ng-if="data.clip_type == 'V'">
                 <video id="{{seq_code}}_{{$index}}" playsinline><source ng-src="{{data.device_filename}}" type="video/mp4" /></video>
             </div>
