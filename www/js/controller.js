@@ -126,7 +126,10 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
     $scope.seq_code = "";
     $scope.time_ids = [];
     $scope.video_ended = new Array();
-    $scope.next = function(seq_code, data_obj, clip_idx){
+    $scope.next = function(seq_code, clip_idx){
+
+        var data_obj = $scope.sequence[seq_code];
+
         //뷰카운트를 전송
         Viewcount.send(DownloadedContent.get().content_srl, data_obj[clip_idx].file_srl);
 
@@ -152,9 +155,9 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
                 video.addEventListener("ended", function(){
                     console.log("ended video : " + seq_code + "_" + data_obj[clip_idx].file_srl);
                     if (data_obj[parseInt(clip_idx) + 1]) {
-                        $scope.next(seq_code, data_obj, parseInt(clip_idx) + 1); // 다음 클립이 있으면 다음 클립
+                        $scope.next(seq_code, parseInt(clip_idx) + 1); // 다음 클립이 있으면 다음 클립
                     } else {
-                        $scope.next(seq_code, data_obj, 0); // 다음 클립이 없으면 0번째 부터
+                        $scope.next(seq_code, 0); // 다음 클립이 없으면 0번째 부터
                     }
                 });
             }
@@ -164,9 +167,9 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
             //build next_seq
             $scope.time_ids[seq_code + '_' + data_obj[clip_idx].file_srl] = setTimeout(function () {
                 if (data_obj[parseInt(clip_idx) + 1]) {
-                    $scope.next(seq_code, data_obj, parseInt(clip_idx) + 1);
+                    $scope.next(seq_code, parseInt(clip_idx) + 1);
                 } else {
-                    $scope.next(seq_code, data_obj, 0);
+                    $scope.next(seq_code, 0);
                 }
             }, data_obj[clip_idx].duration * 1000);
         }
@@ -210,15 +213,17 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
                     if (data_obj[1]) {
                         $scope.next(seq_code, data_obj, 1);
                     } else {
+                        video.load();
                         video.play();
                     }
                 });
             }else{
+                clearTimeout($scope.time_ids[seq_code + '_' + data_obj[0].file_srl]);
                 // 이미지일때
                 $scope.time_ids[seq_code + '_' + data_obj[0].file_srl] = setTimeout(function () {
                     // 다음 클립이 있을때만 동작
                     if(data_obj[1]) {
-                        $scope.next(seq_code, data_obj, 1);
+                        $scope.next(seq_code, 1);
                     }
                 }, data_obj[0].duration * 1000);
             }
@@ -238,7 +243,6 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
     
     // 플레이 컨트롤
     $scope.control_toggle = function(seq_code){
-        // data.is_show_ctrl = !data.is_show_ctrl;
         $scope.sequence[seq_code].is_show_ctrl = !$scope.sequence[seq_code].is_show_ctrl;
         // console.log(seq_code);
     };
@@ -264,7 +268,7 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
                 data.is_pause = true;
                 $scope.sequence[seq_code].is_pause = true;
             }
-        }else if(data.clip_type == 'I'){
+        }else if(data.clip_type != 'V'){
             //이미지일때
             if(data.is_pause) {
                 // 이미지일때 다음 클립이 있을때
@@ -285,9 +289,6 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
                 data.is_pause = true;
                 $scope.sequence[seq_code].is_pause = true;
             }
-        }else{
-            //URL 일때
-
         }
 
         safeApply($scope, function(){});
@@ -404,7 +405,6 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
             //찌꺼기제거
             delete window.localStorage['downloaded_content'];
 
-            console.log('파일 다운로드 완료');
             document.location.reload();
         }
     };

@@ -1,5 +1,5 @@
-<div class="play_control" ng-class="{'active':sequence[seq_code].is_show_ctrl}" style="position:absolute;z-index:10;width:100%;height:100%;" ng-click="control_toggle(seq_code)"></div>
 <div class="playground">
+    <div class="play_control" ng-class="{'active':sequence[seq_code].is_show_ctrl}" ng-click="control_toggle(seq_code)"></div>
     <span ng-click="play_toggle(seq_code)" class="ctrl_btn play" ng-class="{'active':sequence[seq_code].is_show_ctrl}" ng-show="sequence[seq_code].is_show_ctrl">
         <i ng-class="{'ion-ios-pause': !sequence[seq_code].is_pause, 'ion-ios-play': sequence[seq_code].is_pause}"></i>
     </span>
@@ -9,7 +9,7 @@
     <span ng-click="play_next_prev(seq_code, true)" class="ctrl_btn next" ng-class="{'active':sequence[seq_code].is_show_ctrl}" ng-show="sequence[seq_code].is_show_ctrl">
         <i class="ion-ios-arrow-forward"></i>
     </span>
-    <span class="ctrl_btn full" ng-class="{'active':sequence[seq_code].is_show_ctrl}" onclick="jQuery(this).find('i').toggleClass('ion-android-expand').toggleClass('ion-android-contract'); jQuery(this).parent('.playground').toggleClass('fullsize'); jQuery(this).parent('.playground').next('.bp-hs_inner').toggleClass('fullsize'); jQuery(this).siblings('.ctrl_btn').toggleClass('fullsize'); jQuery(this).toggleClass('fullsize')" ng-show="sequence[seq_code].is_show_ctrl">
+    <span class="ctrl_btn full" ng-class="{'active':sequence[seq_code].is_show_ctrl}" onclick="jQuery(this).parent().prev('.play_control').toggleClass('fullsize');jQuery(this).find('i').toggleClass('ion-android-expand').toggleClass('ion-android-contract'); jQuery(this).parent('.playground').toggleClass('fullsize'); jQuery(this).parent('.playground').next('.bp-hs_inner').toggleClass('fullsize'); jQuery(this).siblings('.ctrl_btn').toggleClass('fullsize'); jQuery(this).toggleClass('fullsize')" ng-show="sequence[seq_code].is_show_ctrl">
         <i class="ion-android-expand"></i>
     </span>
 </div>

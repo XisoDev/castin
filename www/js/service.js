@@ -321,7 +321,8 @@ app
       var device = Device.get();
       var params = {
         uuid : device.uuid,
-        content_srl : content_srl
+        content_srl : content_srl,
+          is_did : 'Y'
       }
 
       return XisoApi.send('player.procUpdateByPlayer',params);

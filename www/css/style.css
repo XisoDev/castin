@@ -596,6 +596,10 @@ footer td a{
 .play_control.active{
     background:rgba(0,0,0,.4);
 }
+.play_control.fullsize{
+    z-index: 10002;
+    position: fixed;
+}
 
 .ctrl_btn {
     position: absolute;
@@ -616,7 +620,7 @@ footer td a{
     opacity:1;
 }
 .ctrl_btn.fullsize{
-    z-index:10000;
+    z-index:10001;
 }
 
 .ctrl_btn.play {
