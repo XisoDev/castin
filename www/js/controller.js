@@ -274,11 +274,11 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
                 // 이미지일때 다음 클립이 있을때
                 if($scope.sequence[seq_code][index+1]) {
                     $scope.time_ids[seq_code + '_' + data.file_srl] = setTimeout(function () {
-                        $scope.next(seq_code, $scope.sequence[seq_code], index + 1);
+                        $scope.next(seq_code, parseInt(index) + 1);
                     }, 3000);
                 }else{
                     $scope.time_ids[seq_code + '_' + data.file_srl] = setTimeout(function () {
-                        $scope.next(seq_code, $scope.sequence[seq_code], 0);
+                        $scope.next(seq_code, 0);
                     }, 3000);
                 }
                 data.is_pause = false;
@@ -307,16 +307,16 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
         if(is_next){
             // 다음 클립을 재생
             if($scope.sequence[seq_code][index+1]) {
-                $scope.next(seq_code, $scope.sequence[seq_code], index + 1);
+                $scope.next(seq_code, index + 1);
             }else{
-                $scope.next(seq_code, $scope.sequence[seq_code], 0);
+                $scope.next(seq_code, 0);
             }
         }else{
             // 이전 클립을 재생
             if(index == 0){
-                $scope.next(seq_code, $scope.sequence[seq_code], $scope.sequence[seq_code].length - 1);
+                $scope.next(seq_code, $scope.sequence[seq_code].length - 1);
             }else{
-                $scope.next(seq_code, $scope.sequence[seq_code], index - 1);
+                $scope.next(seq_code, index - 1);
             }
         }
     };
