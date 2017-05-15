@@ -12,6 +12,10 @@
     <span class="ctrl_btn full" ng-class="{'active':sequence[seq_code].is_show_ctrl}" onclick="jQuery(this).parent().prev('.play_control').toggleClass('fullsize');jQuery(this).find('i').toggleClass('ion-android-expand').toggleClass('ion-android-contract'); jQuery(this).parent('.playground').toggleClass('fullsize'); jQuery(this).parent('.playground').next('.bp-hs_inner').toggleClass('fullsize'); jQuery(this).siblings('.ctrl_btn').toggleClass('fullsize'); jQuery(this).toggleClass('fullsize')" ng-show="sequence[seq_code].is_show_ctrl">
         <i class="ion-android-expand"></i>
     </span>
+    <!--<span class="ctrl_btn more" ng-click="go_more(data, seq_code, $index)" ng-class="{'active':sequence[seq_code].is_show_ctrl && (data.url && data.url!='null' && data.url_prefix && data.url_prefix != 'null')}">-->
+    <span ng-click="go_more(seq_code)" class="ctrl_btn more" ng-class="{'active':sequence[seq_code].is_show_ctrl}" ng-show="sequence[seq_code].is_show_ctrl && sequence[seq_code].is_show_more">
+        <button class="button button-balanced button-small">바로가기</button>
+    </span>
 </div>
 
 <div class="bp-hs_inner">
@@ -22,9 +26,6 @@
        data-index="{{$index}}"
     >
         <div style="position:relative; width:100%; height: 100%;">
-            <span class="ctrl_btn more" ng-click="go_more(data, seq_code, $index)" ng-class="{'active':sequence[seq_code].is_show_ctrl && (data.url && data.url!='null' && data.url_prefix && data.url_prefix != 'null')}">
-                <button class="button button-balanced button-small">바로가기</button>
-            </span>
             <div ng-if="data.clip_type == 'V'">
                 <video id="{{seq_code}}_{{$index}}" playsinline><source ng-src="{{data.device_filename}}" type="video/mp4" /></video>
             </div>

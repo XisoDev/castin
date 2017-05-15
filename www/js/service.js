@@ -256,6 +256,20 @@ app
     return self;
 })
 
+.factory("FCMToken", function(){
+    var self = this;
+
+    self.get = function(){
+        return JSON.parse(window.localStorage['fcm_token']);
+    };
+
+    self.set = function(fcm_token){
+        window.localStorage['fcm_token'] = JSON.stringify(fcm_token);
+    };
+
+    return self;
+})
+
 .factory("Viewcount",function(XisoApi, Device){
   var self = this;
 
@@ -265,7 +279,7 @@ app
       uuid : device.uuid,
       content_srl : content_srl,
       file_srl : file_srl
-    }
+    };
 
     return XisoApi.send('file.procIncreaseCount',params);
   };
@@ -273,12 +287,13 @@ app
   return self;
 })
 
-.factory("Auth", function(XisoApi, Device){
+.factory("Auth", function(XisoApi, Device, FCMToken){
     var self = this;
 
     self.get = function(){
         var device = Device.get();
-        var params = { uuid : device.uuid, model : device.model, serial : device.serial, version : device.version, is_did : "N", nick_name : window.localStorage['nick_name'] };
+        var params = { uuid : device.uuid, model : device.model, serial : device.serial, version : device.version, is_did : "N", nick_name : window.localStorage['nick_name'], fcm_token : FCMToken.get() };
+        console.log(params);
 
         //플레이어의 uuid로 인증번호 생성. 인증번호 받아옴. 채널ID가 있으면 채널테이블에서 SERVER URL 받아옴
         return XisoApi.send('player.procCheckPlayer', params);
@@ -294,7 +309,7 @@ app
       if(!window.localStorage['downloaded_content']) return false;
 
       return JSON.parse(window.localStorage['downloaded_content']);
-    }
+    };
 
     self.get = function(){
         if(!window.localStorage['play_content']) return false;

@@ -15,10 +15,10 @@
         "is_top_level": false,
         "variables": {}
     },
-    "cordova-plugin-x-toast": {
+    "cordova-plugin-console": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-x-toast"
+            "id": "cordova-plugin-console"
         },
         "is_top_level": true,
         "variables": {}
@@ -113,6 +113,14 @@
         "source": {
             "type": "registry",
             "id": "cordova-plugin-file-transfer"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-x-toast": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-x-toast"
         },
         "is_top_level": true,
         "variables": {}

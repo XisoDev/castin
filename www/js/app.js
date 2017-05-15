@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('didplayer', ['ionic','ngCordova']);
 
-app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, ClockSrv, $filter,$state) {
+app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, ClockSrv, $filter,$state,FCMToken) {
     $ionicPlatform.ready(function() {
         if(window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -28,6 +28,15 @@ app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, Clock
 
         window.open = cordova.InAppBrowser.open;
 
+        FCMPlugin.getToken(
+            function(token){
+                console.log(token);
+                FCMToken.set(token);
+            },
+            function(err){
+                console.log('error retrieving token: ' + err);
+            }
+        );
     });
 
     ClockSrv.clock(function() {
