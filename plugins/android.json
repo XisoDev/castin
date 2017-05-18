@@ -21,9 +21,6 @@
         "cordova-plugin-device": {
             "PACKAGE_NAME": "kr.co.amuz.softgear.castin"
         },
-        "cordova-plugin-fcm": {
-            "PACKAGE_NAME": "kr.co.amuz.softgear.castin"
-        },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "kr.co.amuz.softgear.castin"
         },
@@ -49,6 +46,9 @@
             "PACKAGE_NAME": "kr.co.amuz.softgear.castin"
         },
         "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "kr.co.amuz.softgear.castin"
+        },
+        "cordova-plugin-fcm": {
             "PACKAGE_NAME": "kr.co.amuz.softgear.castin"
         }
     },

@@ -37,6 +37,71 @@ app.run(function($ionicPlatform, $rootScope, $ionicPopup, FileObj, Device, Clock
                 console.log('error retrieving token: ' + err);
             }
         );
+
+        FCMPlugin.onNotification(function(data){
+            console.log(data);
+
+            // 채널 정보가 있으면
+            if(data.ch_srl) {
+                $ionicPopup.show({
+                    title: data.title,
+                    template: '<img src="' + data.image + '" style="width:100%" /><p>' + data.body + '</p>',
+                    buttons: [
+                        {text: '취소'},
+                        {
+                            text: '<b>바로가기</b>',
+                            type: 'button-positive',
+                            onTap: function (e) {
+                                // 채널로 바로가기
+                                $state.go('channel_list', {mode : 'content', ch_srl : data.ch_srl});
+                            }
+                        }
+                    ]
+                });
+            }else{
+                $ionicPopup.alert({
+                    title: data.title,
+                    // template: '<img src="' + data.image + '" style="width:100%" /><p>' + data.body + '</p>'
+                    template: '<p>' + data.body + '</p>'
+                });
+            }
+
+            if(data.wasTapped){
+                //Notification was received on device tray and tapped by the user.
+            }else{
+                //Notification was received in foreground. Maybe the user needs to be notified.
+            }
+        });
+
+        /*console.log('Start push configuration');
+        var push = PushNotification.init({
+            android: {
+                senderID: "16335973078",
+            },
+            ios: {
+                alert: true,
+                badge: true,
+                sound: true,
+            },
+            windows: {}
+        });
+        push.on('error', function(data) {
+            console.log('ERROR ' + data);
+        });
+        push.on('registration', function(data) {
+            console.log("cordovaPush.register token: " + data.registrationId);
+            var token = data.registrationId;
+            FCMToken.set(token);
+        });
+        push.on('notification', function (notification) {
+            console.log(JSON.stringify([notification]));
+            if (ionic.Platform.isAndroid()) {
+                // handleAndroid(notification);
+            }
+            else if (ionic.Platform.isIOS()) {
+                // handleIOS(notification);
+            }
+        });*/
     });
 
     ClockSrv.clock(function() {
@@ -118,7 +183,8 @@ app.config(function($stateProvider,$urlRouterProvider) {
     .state('channel_list', {
       url:'/channel_list',
       params: {
-        mode: null
+          mode: null,
+          ch_srl: null
       },
       templateUrl : './templates/channel_list.html',
       controller : 'channelCtrl'

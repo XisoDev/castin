@@ -84,7 +84,14 @@ app.controller('channelCtrl', function($scope, $state, XisoApi, Device,Auth, Dow
     var device = Device.get();
     $scope.main_server = XisoApi.server_url;
     var url = "/channel/?device=" + device.uuid;
-    if($stateParams.mode) url += "&mode=" + $stateParams.mode;
+    if ($stateParams.mode) {
+        if($stateParams.ch_srl){
+            url += "&mode=" + $stateParams.mode + "&channel=" + $stateParams.ch_srl;
+        }else {
+            url += "&mode=" + $stateParams.mode;
+        }
+    }
+
     $scope.channel_list_url = url;
     $scope.content_srl = window.localStorage['content_srl'];
   //서버의 컨텐츠번호가 바뀌는지 체크
