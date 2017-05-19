@@ -1,3 +1,7 @@
+castin.keystore
+pwd = jdfnc123
+alias = homebang_cast
+
 keystore password
 jdfnc123
 
