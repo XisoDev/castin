@@ -431,19 +431,25 @@ app.controller('playerCtrl', function($scope, $q, $ionicModal, $cordovaFile, $co
                 if(DownloadedContent.get().content_srl != DownloadedContent.getNewContent().content_srl) {
                     $cordovaFile.removeRecursively(fileObj.externalDataDirectory, DownloadedContent.get().content_srl).then(function (success) {
                         console.log('이전 경로의 파일 삭제됨');
+                        change_delete();    // 바꿔치기하고 찌꺼기 제거하고 새로고침
                     }, function (error) {
                         console.log('파일 삭제실패');
+                        change_delete();    // 바꿔치기하고 찌꺼기 제거하고 새로고침
                     });
                 }
+            }else {
+                change_delete();    // 바꿔치기하고 찌꺼기 제거하고 새로고침
             }
-
-            //바꿔치기 하고
-            window.localStorage['play_content'] = window.localStorage['downloaded_content'];
-            //찌꺼기제거
-            delete window.localStorage['downloaded_content'];
-
-            document.location.reload();
         }
+    };
+
+    var change_delete = function(){
+        //바꿔치기 하고
+        window.localStorage['play_content'] = window.localStorage['downloaded_content'];
+        //찌꺼기제거
+        delete window.localStorage['downloaded_content'];
+
+        document.location.reload();
     };
 
     $scope.download = function(timelines){
